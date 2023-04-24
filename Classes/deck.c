@@ -87,6 +87,10 @@ column* instantiate_yukon_board(deckNode* deck){
         newColumn->node = create_list_element(&deck);
         newColumn->next = NULL;
 
+        if(col > 1){
+            newColumn->node->Card->is_visible = false;
+        }
+
         if (head == NULL) {
             head = newColumn;
         } else {
@@ -106,13 +110,67 @@ column* instantiate_yukon_board(deckNode* deck){
 
         for (int i = 1; i < cards_in_column; i++) {
             ListElement* newNode = create_list_element(&deck);
-            newNode->Card->is_visible = (i < 2) ? false : true;
+            newNode->Card->is_visible = (i < -1 + col) ? false : true;
             current_node->next = newNode;
             current_node = newNode;
         }
     }
+    return head;
+}
+
+void printer(column* col){
+
+    column* currentCol = col;
+    column* firstCol = col;
+
+
+    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
+    printf("\n");
+    for (int j = 0; j < 11; j++) {
+
+
+
+
+        currentCol = firstCol;
+
+
+
+
+
+
+        for(int i = 0; i < 7; i++){
+
+            ListElement* currentCard = currentCol->node;
+
+            for (int k = 0; k < j; k++) {
+
+
+                if(currentCard->next != NULL) {
+                    currentCard = currentCard->next;
+                }
+                else{
+                    printf("\t");
+                    currentCard = NULL;
+                    break;
+                }
+            }
+
+            if(currentCard != NULL){
+                if(currentCard->Card->is_visible){
+                    printf("%c%c \t", currentCard->Card->num, currentCard->Card->type);
+                } else{
+                    printf("%c%c \t",'[',']');
+                }
+            }
+
+            currentCol = currentCol->next;
+        }
+        printf("\n");
+        
+    }
 
 }
+
 
 void print_yukon_board(ColumnStartNode *column_start_head) {
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");

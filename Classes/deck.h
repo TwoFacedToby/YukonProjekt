@@ -37,6 +37,8 @@ typedef struct ColumnStartNode {
 
 deckNode* readDeckFromFile(const char* filename);
 
+column* instantiate_yukon_board(deckNode* deck);
 
+void printer(column* col);
 
 #endif //YUKONPROJEKT_DECK_H

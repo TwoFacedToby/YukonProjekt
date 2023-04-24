@@ -8,14 +8,16 @@ char input[20];
 int main() {
     deckNode* deck = readDeckFromFile("Files/deck.txt");
 
+    column* col = instantiate_yukon_board(deck);
 
+    printer(col);
 
 
 
     //Game do while loop
     //Print Layout
     //Ask for input
-    getInput(input);
+    /*getInput(input);
     printf("%s%s", input, "\n");
     printf("%d%s", getFunctionOfInput(input), "\n\n\n");
     int columnFrom, columnTo, pileTo, pileFrom;
@@ -136,7 +138,7 @@ int main() {
         free(temp);
         temp = NULL;
     }
-
+*/
     return 0;
 }
 
