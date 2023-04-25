@@ -81,14 +81,37 @@ column* instantiate_yukon_board(deckNode* deck){
 
     column *head = NULL, *prev = NULL;
 
-    for (int col = 1; col <= 7; col++) {
+    for (int col = 1; col <= 11; col++) {
         column* newColumn = (column*)malloc(sizeof(column));
         newColumn->column = col;
-        newColumn->node = create_list_element(&deck);
         newColumn->next = NULL;
 
-        if(col > 1){
-            newColumn->node->Card->is_visible = false;
+        int cards_in_column;
+
+        if(col < 8){
+            newColumn->node = create_list_element(&deck);
+
+            if(col > 1){
+                newColumn->node->Card->is_visible = false;
+            }
+
+            if(col == 1){
+                cards_in_column = 1;
+            }else{
+                cards_in_column = 4 + col;
+            }
+
+            ListElement* current_node = newColumn->node;
+
+            for (int i = 1; i < cards_in_column; i++) {
+                ListElement* newNode = create_list_element(&deck);
+                newNode->Card->is_visible = (i < -1 + col) ? false : true;
+                current_node->next = newNode;
+                current_node = newNode;
+            }
+
+        }else{
+            newColumn->node = NULL;
         }
 
         if (head == NULL) {
@@ -98,23 +121,13 @@ column* instantiate_yukon_board(deckNode* deck){
         }
         prev = newColumn;
 
-        int cards_in_column = 0;
 
-        if(col == 1){
-            cards_in_column = 1;
-        }else{
-            cards_in_column = 4 + col;
-        }
 
-        ListElement* current_node = newColumn->node;
 
-        for (int i = 1; i < cards_in_column; i++) {
-            ListElement* newNode = create_list_element(&deck);
-            newNode->Card->is_visible = (i < -1 + col) ? false : true;
-            current_node->next = newNode;
-            current_node = newNode;
-        }
+
+
     }
+
     return head;
 }
 
@@ -138,33 +151,51 @@ void printer(column* col){
 
 
 
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < 8; i++){
 
-            ListElement* currentCard = currentCol->node;
+            if(i < 7){
+                ListElement* currentCard = currentCol->node;
 
-            for (int k = 0; k < j; k++) {
+                for (int k = 0; k < j; k++) {
 
 
-                if(currentCard->next != NULL) {
-                    currentCard = currentCard->next;
+                    if(currentCard->next != NULL) {
+                        currentCard = currentCard->next;
+                    }
+                    else{
+                        printf("\t");
+                        currentCard = NULL;
+                        break;
+                    }
                 }
-                else{
-                    printf("\t");
-                    currentCard = NULL;
-                    break;
+
+                if(currentCard != NULL){
+                    if(currentCard->Card->is_visible){
+                        printf("%c%c \t", currentCard->Card->num, currentCard->Card->type);
+                    } else{
+                        printf("%c%c \t",'[',']');
+                    }
                 }
+
+                currentCol = currentCol->next;
+            }
+            else{
+                if(j == 0 || j == 2 || j == 4 || j==6){
+                    int m = j/2;
+                    for(int q = 0; q < m; q++){
+                        currentCol = currentCol->next;
+                    }
+                    if(currentCol->node != NULL){
+                        printf("\t \t %c%c ",currentCol->node->Card->num,currentCol->node->Card->type);
+                        printf("\t %c%c", 'F', currentCol->column-7);
+                    } else{
+                        printf(" \t %c%c \t %c%d",'[',']','F', currentCol->column-7);
+                    }
+                }
+
+            }
             }
 
-            if(currentCard != NULL){
-                if(currentCard->Card->is_visible){
-                    printf("%c%c \t", currentCard->Card->num, currentCard->Card->type);
-                } else{
-                    printf("%c%c \t",'[',']');
-                }
-            }
-
-            currentCol = currentCol->next;
-        }
         printf("\n");
         
     }
