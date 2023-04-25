@@ -19,6 +19,9 @@ void readInput(char *input, int maxLength) {
 }
 
 void getInput(char *input){
+    printf("LAST Command: \n");
+    printf("Message: \n");
+    printf("INPUT > \n");
     readInput(input, 20);
 }
 

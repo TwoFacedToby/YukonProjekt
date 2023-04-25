@@ -141,15 +141,7 @@ void printer(column* col){
     printf("\n");
     for (int j = 0; j < 11; j++) {
 
-
-
-
         currentCol = firstCol;
-
-
-
-
-
 
         for(int i = 0; i < 8; i++){
 
