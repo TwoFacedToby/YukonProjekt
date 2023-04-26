@@ -39,6 +39,7 @@ bool legalMove(column* col, int colStart, char type, char number, int colEnd){
     column* fromCol;
     column* toCol;
     ListElement* currNode;
+    ListElement* prev;
     ListElement* placementNode;
 
     fromCol = col;
@@ -56,6 +57,7 @@ bool legalMove(column* col, int colStart, char type, char number, int colEnd){
         if(currNode->next == NULL){
             return false;
         }
+        prev = currNode;
         currNode = currNode->next;
 
     }
@@ -78,10 +80,19 @@ bool legalMove(column* col, int colStart, char type, char number, int colEnd){
 
 
     if(checkerNumberLast == checkerNumberFirst + 1 && lastElementInRow->Card->type != type){
+
+        lastElementInRow->next = currNode;
+        prev->next = NULL;
+
         return true;
     }
     else{
         return false;
     }
+
+}
+
+
+column* moveCase15(column* col, int colStart, char type, char number, int colEnd){
 
 }

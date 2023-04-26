@@ -131,94 +131,73 @@ column* instantiate_yukon_board(deckNode* deck){
     return head;
 }
 
-void printer(column* col){
+void printer(column* col) {
 
-    column* currentCol = col;
-    column* firstCol = col;
+    column *currentCol = col;
+    column *firstCol = col;
 
 
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
     printf("\n");
-    for (int j = 0; j < 11; j++) {
+    int j = 0;
+    while (true) {
 
         currentCol = firstCol;
+        bool allCardsNull = true;
 
-        for(int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++) {
 
-            if(i < 7){
-                ListElement* currentCard = currentCol->node;
+            if (i < 7) {
+                ListElement *currentCard = currentCol->node;
 
                 for (int k = 0; k < j; k++) {
 
-
-                    if(currentCard->next != NULL) {
+                    if (currentCard->next != NULL) {
                         currentCard = currentCard->next;
-                    }
-                    else{
+                    } else {
                         printf("\t");
                         currentCard = NULL;
                         break;
                     }
                 }
 
-                if(currentCard != NULL){
-                    if(currentCard->Card->is_visible){
+                if (currentCard != NULL) {
+                    allCardsNull = false;
+                    if (currentCard->Card->is_visible) {
                         printf("%c%c \t", currentCard->Card->num, currentCard->Card->type);
-                    } else{
-                        printf("%c%c \t",'[',']');
+                    } else {
+                        printf("%c%c \t", '[', ']');
                     }
                 }
 
                 currentCol = currentCol->next;
-            }
-            else{
-                if(j == 0 || j == 2 || j == 4 || j==6){
-                    int m = j/2;
-                    for(int q = 0; q < m; q++){
+            } else {
+                if (j == 0 || j == 2 || j == 4 || j == 6) {
+                    int m = j / 2;
+                    for (int q = 0; q < m; q++) {
                         currentCol = currentCol->next;
                     }
-                    if(currentCol->node != NULL){
-                        printf("\t \t %c%c ",currentCol->node->Card->num,currentCol->node->Card->type);
-                        printf("\t %c%c", 'F', currentCol->column-7);
-                    } else{
-                        printf(" \t %c%c \t %c%d",'[',']','F', currentCol->column-7);
+                    if (currentCol->node != NULL) {
+                        printf("\t \t %c%c ", currentCol->node->Card->num, currentCol->node->Card->type);
+                        printf("\t %c%c", 'F', currentCol->column - 7);
+                    } else {
+                        printf(" \t %c%c \t %c%d", '[', ']', 'F', currentCol->column - 7);
                     }
                 }
-
             }
-            }
-
-        printf("\n");
-        
-    }
-
-}
-
-
-void print_yukon_board(ColumnStartNode *column_start_head) {
-    printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
-    bool cards_remaining = true;
-
-    while (cards_remaining) {
-        cards_remaining = false;
-        ColumnStartNode *current_column_node = column_start_head;
-
-        while (current_column_node != NULL) {
-            ListElement *current = current_column_node->col_start->node;
-
-            if (current != NULL) {
-                card *c = current->Card;
-                printf("%c%c\t", c->num, c->type);
-                current_column_node->col_start->node = current->next;
-                cards_remaining = true;
-            } else {
-                printf("\t");
-            }
-
-            current_column_node = current_column_node->next;
         }
+
         printf("\n");
+
+        if (allCardsNull && j > 6) {
+            break;
+        }
+
+        j++;
+
     }
+
+
 }
 
 
