@@ -148,18 +148,27 @@ void printer(column* col) {
         for (int i = 0; i < 8; i++) {
 
             if (i < 7) {
+
                 ListElement *currentCard = currentCol->node;
 
-                for (int k = 0; k < j; k++) {
+                if(currentCol->node == NULL){
+                    printf("\t");
+                    currentCard = NULL;
+                }else{
+                    for (int k = 0; k < j; k++) {
 
-                    if (currentCard->next != NULL) {
-                        currentCard = currentCard->next;
-                    } else {
-                        printf("\t");
-                        currentCard = NULL;
-                        break;
+                        if (currentCard->next != NULL) {
+                            currentCard = currentCard->next;
+                        } else {
+                            printf("\t");
+                            currentCard = NULL;
+                            break;
+                        }
                     }
                 }
+
+
+
 
                 if (currentCard != NULL) {
                     allCardsNull = false;
@@ -178,8 +187,8 @@ void printer(column* col) {
                         currentCol = currentCol->next;
                     }
                     if (currentCol->node != NULL) {
-                        printf("\t \t %c%c ", currentCol->node->Card->num, currentCol->node->Card->type);
-                        printf("\t %c%c", 'F', currentCol->column - 7);
+                        printf("\t %c%c ", currentCol->node->Card->num, currentCol->node->Card->type);
+                        printf("\t %c%d", 'F', currentCol->column - 7);
                     } else {
                         printf(" \t %c%c \t %c%d", '[', ']', 'F', currentCol->column - 7);
                     }

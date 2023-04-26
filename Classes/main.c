@@ -91,13 +91,16 @@ int main() {
                 columnFrom = atoi(&input[1]);
                 columnTo = atoi(&input[5]);
 
+                legalMove(col, columnFrom, 'F', 'F', columnTo);
+
 
                 break;
             case 14:
                 //Move top card from column to a finished pile
+
                 columnFrom = atoi(&input[1]);
                 pileTo = atoi(&input[5]);
-
+                legalPileMove(col, columnFrom, pileTo);
                 break;
             case 15:
                 //Move a specific card from a column to another column
