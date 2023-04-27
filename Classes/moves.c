@@ -26,7 +26,7 @@ int convertFrokLetter(char letter){
             letter = 10;
             break;
         default:
-            atoi(&letter);
+            letter = atoi(&letter);
             break;
 
     }
@@ -78,6 +78,17 @@ bool legalMove(column* col, int colStart, char type, char number, int colEnd){
 
     }
 
+    int checkerNumberFirst = convertFrokLetter(currNode->Card->num);
+
+    if(toCol->node == NULL && checkerNumberFirst == 13){
+        if(!prev->Card->is_visible){
+            prev->Card->is_visible = true;
+        }
+        prev->next = NULL;
+        toCol->node = currNode;
+        return true;
+    }
+
     ListElement* lastElementInRow = toCol->node;
 
     while (lastElementInRow->next != NULL){
@@ -85,13 +96,16 @@ bool legalMove(column* col, int colStart, char type, char number, int colEnd){
     }
 
     int checkerNumberLast = convertFrokLetter(lastElementInRow->Card->num);
-    int checkerNumberFirst = convertFrokLetter(currNode->Card->num);
 
 
 
-    if(checkerNumberLast == checkerNumberFirst + 1 && lastElementInRow->Card->type != type){
+
+    if(checkerNumberLast == checkerNumberFirst + 1 && lastElementInRow->Card->type != currNode->Card->type){
 
         lastElementInRow->next = currNode;
+        if(!prev->Card->is_visible){
+            prev->Card->is_visible = true;
+        }
         prev->next = NULL;
 
         return true;
@@ -147,6 +161,9 @@ bool legalPileMove(column* col, int colStart, int colEnd){
             fromCol->node = NULL;
         }
         else{
+            if(!prev->Card->is_visible){
+                prev->Card->is_visible = true;
+            }
             prev->next = NULL;
         }
 
@@ -168,11 +185,15 @@ bool legalPileMove(column* col, int colStart, int colEnd){
 
 
 
+
     if(toCol->node != NULL && cardPile + 1 == cardFrom && currNode->Card->type == pileNode->Card->type){
         if(firstCard){
             fromCol->node = NULL;
         }
         else{
+            if(!prev->Card->is_visible){
+                prev->Card->is_visible = true;
+            }
             prev->next = NULL;
         }
         pileNode->next = currNode;

@@ -187,7 +187,12 @@ void printer(column* col) {
                         currentCol = currentCol->next;
                     }
                     if (currentCol->node != NULL) {
-                        printf("\t %c%c ", currentCol->node->Card->num, currentCol->node->Card->type);
+                        ListElement* listElement = currentCol->node;
+                        while (listElement->next != NULL){
+                            listElement = listElement->next;
+                        }
+
+                        printf("\t %c%c ", listElement->Card->num, listElement->Card->type);
                         printf("\t %c%d", 'F', currentCol->column - 7);
                     } else {
                         printf(" \t %c%c \t %c%d", '[', ']', 'F', currentCol->column - 7);
