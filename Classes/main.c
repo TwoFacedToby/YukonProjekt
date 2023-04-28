@@ -129,6 +129,8 @@ int main() {
                 //Move from top of a finished pile to another column
                 pileFrom = atoi(&input[1]);
                 columnTo = atoi(&input[5]);
+                moveFromPileToC(col, pileFrom, columnTo);
+
 
                 break;
         }

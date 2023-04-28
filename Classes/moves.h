@@ -9,5 +9,6 @@
 
 bool legalMove(column* col, int colStart, char type, char number, int colEnd);
 bool legalPileMove(column* col, int colStart, int colEnd);
+bool moveFromPileToC(column* col, int colStart, int colEnd);
 
 #endif //YUKONPROJEKT_MOVES_H

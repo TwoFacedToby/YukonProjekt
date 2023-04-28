@@ -207,3 +207,80 @@ bool legalPileMove(column* col, int colStart, int colEnd){
 
 
 }
+
+bool moveFromPileToC(column* col, int colStart, int colEnd){
+    column* fromCol;
+    column* toCol;
+
+    fromCol = col;
+    toCol = col;
+
+    ListElement* currNode;
+    ListElement* prev;
+    ListElement* columnNode;
+
+    for (int i = 0; i < colStart+6; ++i) {
+
+        fromCol = fromCol->next;
+
+    }
+
+    if(fromCol->node == NULL){
+        return false;
+    }
+
+    currNode = fromCol->node;
+
+    bool firstCard = true;
+    while (currNode->next != NULL){
+        prev = currNode;
+        currNode = currNode->next;
+        firstCard = false;
+    }
+
+    for (int i = 0; i < colEnd-1; ++i) {
+
+        toCol = toCol->next;
+
+    }
+
+
+
+    int cardFrom = convertFrokLetter(currNode->Card->num);
+
+    if(toCol->node == NULL && cardFrom == 13){
+
+        if(firstCard){
+            fromCol->node = NULL;
+        }
+        else{
+            prev->next = NULL;
+        }
+        toCol->node = currNode;
+        return true;
+
+    }
+
+    columnNode = toCol->node;
+    while (columnNode->next != NULL){
+        columnNode = columnNode->next;
+    }
+    int columnNodeNumber = convertFrokLetter(columnNode->Card->num);
+
+    if(columnNodeNumber == cardFrom +1 && columnNode->Card->type != currNode->Card->type){
+
+        if(firstCard){
+            fromCol->node = NULL;
+        }
+        else{
+            prev->next = NULL;
+        }
+        columnNode->next = currNode;
+        return true;
+
+    } else{
+        return false;
+    }
+
+
+}
