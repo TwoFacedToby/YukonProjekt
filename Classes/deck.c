@@ -88,7 +88,7 @@ column* instantiate_yukon_board(deckNode* deck){
 
         int cards_in_column;
 
-        if(col < 8){
+        if(col < 8 && deck != NULL){
             newColumn->node = create_list_element(&deck);
 
             if(col > 1){
@@ -139,6 +139,8 @@ void printer(column* col) {
 
     printf("C1\tC2\tC3\tC4\tC5\tC6\tC7\n");
     printf("\n");
+
+
     int j = 0;
     while (true) {
 
@@ -214,4 +216,28 @@ void printer(column* col) {
 
 }
 
+deckNode* loader(char inputArr[]){
+    int length = strlen(inputArr);
+    // Allocate memory for a new string, making sure to account for the
+    // fact that the string starts at index 3
+    char* newStr = (char*)malloc(sizeof(char) * (length - 2));
+    // Copy the characters from inputArr starting at index 3 into the new string
+    int i, j = 0;
+    for (i = 3; i < length; i++) {
+        newStr[j++] = inputArr[i];
+    }
+    newStr[j] = '\0';
+    char* buffer = (char*)malloc(sizeof(char) * (strlen(newStr) + 7));
+    // Copy "Files/" to the beginning of the buffer
+    strcpy(buffer, "Files/");
+    // Concatenate newStr to the end of the buffer
+    strcat(buffer, newStr);
+    // Create a new deckNode object and set its properties based on the new string
+    deckNode* node = readDeckFromFile(buffer);
+    // set node properties here based on newStr
+    // ...
+    // Free the memory allocated for the new string
+    free(newStr);
+    return node;
 
+}

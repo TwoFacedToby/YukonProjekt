@@ -39,6 +39,8 @@ deckNode* readDeckFromFile(const char* filename);
 
 column* instantiate_yukon_board(deckNode* deck);
 
+deckNode* loader(char inputArr[]);
+
 void printer(column* col);
 
 #endif //YUKONPROJEKT_DECK_H

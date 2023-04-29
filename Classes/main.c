@@ -3,13 +3,19 @@
 #include "deck.h"
 #include "reader.h"
 #include "moves.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 char input[20];
 
 int main() {
-    deckNode* deck = readDeckFromFile("Files/deck.txt");
+    deckNode* deck = NULL;// = readDeckFromFile("Files/deck.txt");
 
     column* col = instantiate_yukon_board(deck);
+    //col = instantiate_yukon_board(deck);
+
+
 
     //printer(col);
 
@@ -21,6 +27,7 @@ int main() {
         printf("%d%s", getFunctionOfInput(input), "\n\n\n");
         int columnFrom, columnTo, pileTo, pileFrom;
         char cardNum, cardSuit;
+
 
         switch (getFunctionOfInput(input)) {
             case 0:
@@ -66,9 +73,13 @@ int main() {
                 //Save Game (extra assignment)
 
                 break;
+
             case 9:
                 //LD
                 //Load Deck. Can contain filename.
+
+                deck = loader(input);
+                col = instantiate_yukon_board(deck);
 
                 break;
             case 10:
