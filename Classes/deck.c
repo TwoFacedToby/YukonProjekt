@@ -19,12 +19,95 @@ deckNode* createDeckNode(char num, char type) {
     return newNode;
 }
 
+//Checks if file is valid
+bool checkForSuitsAndNumber(deckNode* deck) {
+
+    int card_count = 1;
+    for (deckNode* node = deck->next; node != NULL; node = node->next) {
+        card_count++;
+    }
+
+    if (card_count != 52) {
+        printf("There are not 52 cards in file");
+        return false;
+    }
+
+    int suit_counts[4] = {0};
+    bool unique_cards[52] = {0};
+    for (deckNode* node = deck; node != NULL; node = node->next) {
+        char suit = node->Card.type;
+        int card_index;
+        switch (suit) {
+            case 'C':
+                suit_counts[0]++;
+                card_index = 0;
+                break;
+            case 'D':
+                suit_counts[1]++;
+                card_index = 13;
+                break;
+            case 'H':
+                suit_counts[2]++;
+                card_index = 26;
+                break;
+            case 'S':
+                suit_counts[3]++;
+                card_index = 39;
+                break;
+            default:
+                printf("Error: invalid suit %c\n", suit);
+                return false;
+        }
+
+        int card_number;
+        if (node->Card.num == 'A') {
+            card_number = 1;
+        } else if (node->Card.num == 'K') {
+            card_number = 13;
+        } else if (node->Card.num == 'Q') {
+            card_number = 12;
+        } else if (node->Card.num == 'J') {
+            card_number = 11;
+        } else if (node->Card.num == 'T') {
+            card_number = 10;
+        } else {
+            card_number = node->Card.num - '0';
+        }
+        card_index += card_number - 1;
+
+        if (unique_cards[card_index]) {
+            printf("Error: duplicate card %c%c\n", suit, node->Card.num);
+            return false;
+        } else {
+            unique_cards[card_index] = true;
+        }
+    }
+
+    for (int j = 0; j < 4; j++) {
+        if (suit_counts[j] != 13) {
+            printf("Error: %d cards of suit %c\n", suit_counts[j], "CDHS"[j]);
+            return false;
+        }
+    }
+
+
+    return true;
+
+
+
+
+}
+
 deckNode* readDeckFromFile(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
         printf("Error opening file: %s\n", filename);
         return NULL;
     }
+
+
+
+
 
     deckNode* head = NULL;
     deckNode* tail = NULL;
@@ -47,11 +130,12 @@ deckNode* readDeckFromFile(const char* filename) {
         }
     }
 
-
+    checkForSuitsAndNumber(head);
 
     fclose(file);
     return head;
 }
+
 
 
 /*
