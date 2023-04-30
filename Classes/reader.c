@@ -91,7 +91,7 @@ int getFunctionOfInput(char *input){
             else return 0;
         }
         else if(input[1] == 'L'){
-            //SI
+            //SL
             //Shuffle by Split Deck
             if(last(input[2])) return 5;
             else return 0;

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "deck.h"
+#include <time.h>
 #define DECK
 
 #define MAX_LINE_LENGTH 3
@@ -159,7 +160,6 @@ deckNode* splitter (deckNode* deck, int splitCard){
     deckNode* firstHalf;
     deckNode* secondHalf;
     deckNode* prev;
-    deckNode* shuffledPile;
     deckNode* current;
 
     firstHalf = deck;
@@ -168,7 +168,22 @@ deckNode* splitter (deckNode* deck, int splitCard){
 
     secondHalf = secondHalf->next;
 
-    for (int i = 0; i < splitCard; ++i) {
+    if(splitCard == 0){
+        int random_num;
+        srand(time(NULL)); // seed the random number generator with current time
+
+        random_num = rand() % 51 + 1; // generates a random number between 1 and 51
+
+        printf("myRanom number: %d", random_num);
+
+        splitCard = random_num;
+
+    }
+
+
+
+
+    for (int i = 1; i < splitCard; ++i) {
         prev = prev->next;
 
         if(secondHalf){
