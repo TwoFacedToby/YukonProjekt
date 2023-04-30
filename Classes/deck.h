@@ -37,7 +37,7 @@ typedef struct ColumnStartNode {
 
 deckNode* readDeckFromFile(const char* filename);
 
-column* instantiate_yukon_board(deckNode* deck);
+column* instantiate_yukon_board(deckNode* deck, bool showCards, bool visible);
 
 deckNode* loader(char inputArr[]);
 

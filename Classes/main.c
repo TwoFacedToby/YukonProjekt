@@ -11,8 +11,9 @@ char input[20];
 
 int main() {
     deckNode* deck = NULL;// = readDeckFromFile("Files/deck.txt");
+    deckNode* currentGameDeck = NULL;
 
-    column* col = instantiate_yukon_board(deck);
+    column* col = instantiate_yukon_board(deck, false, false);
     //col = instantiate_yukon_board(deck);
 
 
@@ -36,12 +37,14 @@ int main() {
             case 1:
                 //P
                 //Start Game with Current set of Cards
+                col = instantiate_yukon_board(deck, false, false);
 
                 break;
             case 2:
                 //Q
                 //Quit current game, still hold on to current deck
-
+                printf("Closing program");
+                return 0;
                 break;
             case 3:
                 //QQ
@@ -66,6 +69,7 @@ int main() {
             case 7:
                 //SW
                 //Show screen, show the full current deck on the screen, not as a game.
+                col = instantiate_yukon_board(deck, true, true);
 
                 break;
             case 8:
@@ -79,7 +83,8 @@ int main() {
                 //Load Deck. Can contain filename.
 
                 deck = loader(input);
-                col = instantiate_yukon_board(deck);
+                col = instantiate_yukon_board(deck, true, false);
+                printf("her");
 
                 break;
             case 10:

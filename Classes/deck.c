@@ -105,10 +105,6 @@ deckNode* readDeckFromFile(const char* filename) {
         return NULL;
     }
 
-
-
-
-
     deckNode* head = NULL;
     deckNode* tail = NULL;
     char line[3];
@@ -158,10 +154,12 @@ ListElement* create_list_element(deckNode** current) {
     return newNode;
 }
 
+column* showAllCards (deckNode* deck){
+
+}
 
 
-
-column* instantiate_yukon_board(deckNode* deck){
+column* instantiate_yukon_board(deckNode* deck, bool showCards, bool visible){
 
     column *head = NULL, *prev = NULL;
 
@@ -172,7 +170,7 @@ column* instantiate_yukon_board(deckNode* deck){
 
         int cards_in_column;
 
-        if(col < 8 && deck != NULL){
+        if(col < 8 && deck != NULL && !showCards){
             newColumn->node = create_list_element(&deck);
 
             if(col > 1){
@@ -194,7 +192,31 @@ column* instantiate_yukon_board(deckNode* deck){
                 current_node = newNode;
             }
 
-        }else{
+        }else if(showCards && col < 8){
+
+            newColumn->node = create_list_element(&deck);
+
+            if(col < 4){
+                cards_in_column = 8;
+            }
+            else{
+                cards_in_column = 7;
+            }
+
+            ListElement* current_node = newColumn->node;
+            current_node->Card->is_visible = (!visible) ? false : true;
+
+            for (int i = 1; i < cards_in_column; ++i) {
+                ListElement* newNode = create_list_element(&deck);
+                newNode->Card->is_visible = (!visible) ? false : true;
+                current_node->next = newNode;
+                current_node = newNode;
+            }
+
+
+
+
+        } else{
             newColumn->node = NULL;
         }
 
