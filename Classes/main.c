@@ -10,15 +10,14 @@
 char input[20];
 
 int main() {
+    deckNode* startPhaseDeck = NULL;
     deckNode* deck = NULL;// = readDeckFromFile("Files/deck.txt");
-    deckNode* currentGameDeck = NULL;
+    column* currentGame = NULL;
 
-    column* col = instantiate_yukon_board(deck, false, false);
+    column* col = instantiate_yukon_board(startPhaseDeck, false, false);
     //col = instantiate_yukon_board(deck);
 
 
-
-    //printer(col);
 
     do {
         printer(col);
@@ -37,11 +36,20 @@ int main() {
             case 1:
                 //P
                 //Start Game with Current set of Cards
-                col = instantiate_yukon_board(deck, false, false);
+                if(currentGame != NULL){
+                    col = currentGame;
+                }
+                else{
+                    col = instantiate_yukon_board(deck, false, false);
+                }
+
 
                 break;
             case 2:
                 //Q
+                currentGame = col;
+                col = instantiate_yukon_board(startPhaseDeck, false, false);
+
                 //Quit current game, still hold on to current deck
 
                 break;
