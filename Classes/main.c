@@ -43,11 +43,12 @@ int main() {
             case 2:
                 //Q
                 //Quit current game, still hold on to current deck
-                printf("Closing program");
-                return 0;
+
                 break;
             case 3:
                 //QQ
+                printf("Closing program");
+                return 0;
                 //Close program
 
                 break;
