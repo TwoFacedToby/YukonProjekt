@@ -37,6 +37,7 @@ int main() {
                 //P
                 //Start Game with Current set of Cards
                 if(currentGame != NULL){
+                    printf("hej");
                     col = currentGame;
                 }
                 else{
@@ -78,6 +79,7 @@ int main() {
             case 7:
                 //SW
                 //Show screen, show the full current deck on the screen, not as a game.
+
                 col = instantiate_yukon_board(deck, true, true);
 
                 break;
@@ -91,6 +93,7 @@ int main() {
                 //LD
                 //Load Deck. Can contain filename.
 
+                currentGame = NULL;
                 deck = loader(input);
                 col = instantiate_yukon_board(deck, true, false);
                 printf("her");

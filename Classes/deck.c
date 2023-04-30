@@ -174,7 +174,11 @@ column* instantiate_yukon_board(deckNode* deck, bool showCards, bool visible){
             newColumn->node = create_list_element(&deck);
 
             if(col > 1){
+                printf("Watch this");
                 newColumn->node->Card->is_visible = false;
+            }
+            else{
+                newColumn->node->Card->is_visible = true;
             }
 
             if(col == 1){
