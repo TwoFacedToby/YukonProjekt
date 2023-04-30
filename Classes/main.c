@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "FileHandler.h"
 
 char input[20];
 
@@ -23,10 +24,13 @@ int main() {
         printer(col);
 
         getInput(input);
+
         printf("%s%s", input, "\n");
         printf("%d%s", getFunctionOfInput(input), "\n\n\n");
         int columnFrom, columnTo, pileTo, pileFrom, splitNumber;
         char cardNum, cardSuit;
+        char* substr = input + 3;
+
 
 
         switch (getFunctionOfInput(input)) {
@@ -60,9 +64,12 @@ int main() {
                 //Close program
 
                 break;
+
             case 4:
                 //SD
                 //Save Deck, saves the deck to a file, can include file name.
+
+                save_deck_to_file(deck, substr);
 
                 break;
             case 5:
@@ -77,7 +84,8 @@ int main() {
             case 6:
                 //SR
                 //Shuffle deck at random
-
+                deck = randomShuffle(deck);
+                col = instantiate_yukon_board(deck, true, true);
                 break;
             case 7:
                 //SW

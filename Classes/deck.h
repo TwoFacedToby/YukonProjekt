@@ -45,4 +45,6 @@ void printer(column* col);
 
 deckNode* splitter (deckNode* deck, int splitCard);
 
+deckNode* randomShuffle(deckNode* deck);
+
 #endif //YUKONPROJEKT_DECK_H

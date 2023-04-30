@@ -424,3 +424,82 @@ deckNode* loader(char inputArr[]){
     return node;
 
 }
+
+int length(deckNode* head) {
+    int count = 0;
+    while (head != NULL) {
+        count++;
+        head = head->next;
+    }
+    return count;
+}
+
+deckNode* randomShuffle(deckNode* deck){
+    if (deck == NULL) {
+        return NULL;
+    }
+
+    deckNode* unshuffledPile = deck;
+    deckNode* shuffledPile = NULL;
+
+    srand(time(NULL)); // Seed the random number generator with current time, move this outside the loop
+
+    for (int i = 1; i <= 52; i++) {
+        int random_num = rand() % i + 1; // Generates a random number based on the remaining elements
+
+        deckNode* prev = NULL;
+        deckNode* curr = unshuffledPile;
+
+        /*if(i > 1){
+            prev = curr;
+            curr = curr->next;
+        }*/
+
+
+
+        // Detach the current node from the unshuffledPile
+        if (shuffledPile != NULL) {
+            unshuffledPile = unshuffledPile->next;
+        } else {
+            unshuffledPile = unshuffledPile->next;
+        }
+
+        // Insert the detached node into shuffledPile
+        if (shuffledPile == NULL) {
+            shuffledPile = curr;
+            curr->next = NULL;
+        } else if (random_num == 1) {
+            curr->next = shuffledPile;
+            shuffledPile = curr;
+
+        } else if(random_num == i) {
+            deckNode* t = shuffledPile;
+            for (int j = 2; j < i; ++j) {
+                t = t->next;
+            }
+
+            t->next = curr;
+            curr->next = NULL;
+
+        }else {
+                deckNode* temp = shuffledPile;
+                deckNode* prevShuffled = NULL;
+
+                for (int j = 2; j <= random_num; j++) {
+                    prevShuffled = temp;
+                    temp = temp->next;
+                }
+
+                prevShuffled->next = curr;
+                curr->next = temp;
+            }
+        }
+
+
+    return shuffledPile;
+}
+
+
+
+
+
