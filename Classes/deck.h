@@ -43,4 +43,6 @@ deckNode* loader(char inputArr[]);
 
 void printer(column* col);
 
+deckNode* splitter (deckNode* deck, int splitCard);
+
 #endif //YUKONPROJEKT_DECK_H

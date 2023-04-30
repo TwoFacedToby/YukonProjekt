@@ -154,7 +154,65 @@ ListElement* create_list_element(deckNode** current) {
     return newNode;
 }
 
-column* showAllCards (deckNode* deck){
+deckNode* splitter (deckNode* deck, int splitCard){
+
+    deckNode* firstHalf;
+    deckNode* secondHalf;
+    deckNode* prev;
+    deckNode* shuffledPile;
+    deckNode* current;
+
+    firstHalf = deck;
+    secondHalf = deck;
+    prev = firstHalf;
+
+    secondHalf = secondHalf->next;
+
+    for (int i = 0; i < splitCard; ++i) {
+        prev = prev->next;
+
+        if(secondHalf){
+            secondHalf = secondHalf->next;
+        }
+
+
+
+    }
+    printf("hej");
+    if(prev){
+        prev->next = NULL;
+    }
+
+
+
+
+     // Store the first node's address in firstNode
+
+    current = firstHalf;
+    deckNode* firstNode = current;
+    firstHalf = firstHalf->next;
+
+    while (firstHalf && secondHalf) {
+        current->next = secondHalf;
+        secondHalf = secondHalf->next;
+        current = current->next;
+
+        if (firstHalf) {
+            current->next = firstHalf;
+            firstHalf = firstHalf->next;
+            current = current->next;
+        }
+    }
+
+    if(firstHalf){
+        current->next = firstHalf;
+    }
+
+    if(secondHalf){
+        current->next = secondHalf;
+    }
+
+    return firstNode;
 
 }
 

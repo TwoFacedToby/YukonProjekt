@@ -25,7 +25,7 @@ int main() {
         getInput(input);
         printf("%s%s", input, "\n");
         printf("%d%s", getFunctionOfInput(input), "\n\n\n");
-        int columnFrom, columnTo, pileTo, pileFrom;
+        int columnFrom, columnTo, pileTo, pileFrom, splitNumber;
         char cardNum, cardSuit;
 
 
@@ -37,7 +37,6 @@ int main() {
                 //P
                 //Start Game with Current set of Cards
                 if(currentGame != NULL){
-                    printf("hej");
                     col = currentGame;
                 }
                 else{
@@ -67,7 +66,11 @@ int main() {
 
                 break;
             case 5:
-                //SI
+                //SL
+                splitNumber = atoi(&input[3]);
+                deck = splitter(deck, splitNumber);
+                //Cahnge visible to true for testing
+                col = instantiate_yukon_board(deck, true, true);
                 //Shuffle deck as split, can have follow up number
 
                 break;
