@@ -17,6 +17,9 @@ typedef struct moveHistory{
     struct moveHistory* next;
 }moves;
 
+
+bool isInitialState(moves* move);
+
 moves* addRedoToUndo(moves* lastMoves, column* col, moves* undoMove);
 
 moves* undoLastMove(moves* lastMoves, column* col, moves* undoMove);

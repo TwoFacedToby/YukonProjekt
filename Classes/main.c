@@ -38,8 +38,7 @@ int main() {
 
         freeItUp(&messages);
 
-        printf("%s%s", input, "\n");
-        printf("%d%s", getFunctionOfInput(input), "\n\n\n");
+
         int columnFrom, columnTo, pileTo, pileFrom, splitNumber;
         char cardNum, cardSuit;
         char* substr = input + 3;
@@ -50,6 +49,7 @@ int main() {
         switch (getFunctionOfInput(input)) {
             case 0:
                 //Error in formatting or unknown command
+                messages = messageHandler(messages, "Error: Unknown command");
                 break;
             case 1:
                 //P
@@ -62,14 +62,22 @@ int main() {
                 else{
                     col = instantiate_yukon_board(deck, false, false);
                 }
-                gameRunning = true;
-                previousMoves = instantiateMovesList();
-
                 if(deck == NULL){
                     messages = messageHandler(messages, "Error: You need to load a deck before you start the game");
-                }else{
-                    messages = messageHandler(messages, "OK");
                 }
+                else if(gameRunning) {
+                    messages = messageHandler(messages, "Error: Game is already running");
+                }
+                else{
+                    messages = messageHandler(messages, "OK");
+                    gameRunning = true;
+                    previousMoves = instantiateMovesList();
+                }
+
+
+
+
+
 
 
                 break;
@@ -163,7 +171,13 @@ int main() {
 
                 currentGame = NULL;
                 deck = loader(input);
-                col = instantiate_yukon_board(deck, true, false);
+                if(deck != NULL){
+                    col = instantiate_yukon_board(deck, true, false);
+                    messages = messageHandler(messages, "OK");
+                }else{
+                    messages = messageHandler(messages, "Error: No file found with that name");
+                }
+
 
                 break;
             case 10:
@@ -178,14 +192,29 @@ int main() {
 
                     addRedoToUndo(previousMoves, col, redoMove);
                     redoMove = undoLastMove(previousMoves, col, redoMove);
+                    messages = messageHandler(messages, "OK");
 
+
+                } else{
+                    messages = messageHandler(messages, "Error: Redo must be done the turn after undo");
                 }
+
 
                 break;
             case 12:
                 //U
                 //Undo (extra assignment)
+
                 redoMove = undoLastMove(previousMoves, col, redoMove);
+
+                if(redoMove != NULL){
+                    messages = messageHandler(messages, "OK");
+                }else{
+                    messages = messageHandler(messages, "Error: no more undoes");
+                }
+
+
+
 
 
                 break;
@@ -202,6 +231,10 @@ int main() {
                     }
                     previousMoves = addPreviousMoves(previousMoves, columnFrom, (char)NULL, (char)NULL, columnTo, wasVis);
 
+                    messages = messageHandler(messages, "OK");
+
+                }else{
+                    messages = messageHandler(messages, "Error: Not a legal move");
                 }
 
 
@@ -219,6 +252,10 @@ int main() {
                         wasVis = true;
                     }
                     previousMoves = addPreviousMoves(previousMoves, columnFrom, (char)NULL, (char)NULL, pileTo+7, wasVis);
+                    messages = messageHandler(messages, "OK");
+
+                }else{
+                    messages = messageHandler(messages, "Error: Not a legal move");
                 }
 
                 break;
@@ -241,8 +278,11 @@ int main() {
                     }
                     previousMoves = addPreviousMoves(previousMoves, columnFrom, cardNum, cardSuit, columnTo, wasVis);
 
-                }
+                    messages = messageHandler(messages, "OK");
 
+                }else{
+                    messages = messageHandler(messages, "Error: Not a legal move");
+                }
 
 
                 break;
@@ -261,9 +301,13 @@ int main() {
                 bool my = moveFromPileToC(col, pileFrom, columnTo);
                 if(my){
                     previousMoves = addPreviousMoves(previousMoves, pileFrom+7, (char)NULL, (char)NULL,columnTo, false);
-                }
+                    messages = messageHandler(messages, "OK");
 
+                }else{
+                    messages = messageHandler(messages, "Error: Not a legal move");
+                }
                 break;
+
         }
     } while (true);
 

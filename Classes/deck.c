@@ -98,7 +98,6 @@ bool checkForSuitsAndNumber(deckNode* deck) {
 deckNode* readDeckFromFile(const char* filename) {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
-        printf("Error opening file: %s\n", filename);
         return NULL;
     }
 
@@ -166,9 +165,9 @@ deckNode* splitter (deckNode* deck, int splitCard){
 
     if(splitCard == 0){
         int random_num;
-        srand(time(NULL)); // seed the random number generator with current time
+        srand(time(NULL));
 
-        random_num = rand() % 51 + 1; // generates a random number between 1 and 51
+        random_num = rand() % 51 + 1;
 
         printf("myRanom number: %d", random_num);
 
@@ -197,7 +196,7 @@ deckNode* splitter (deckNode* deck, int splitCard){
 
 
 
-     // Store the first node's address in firstNode
+
 
     current = firstHalf;
     deckNode* firstNode = current;
@@ -388,25 +387,23 @@ void printer(column* col) {
 
 deckNode* loader(char inputArr[]){
     int length = strlen(inputArr);
-    // Allocate memory for a new string, making sure to account for the
-    // fact that the string starts at index 3
+
     char* newStr = (char*)malloc(sizeof(char) * (length - 2));
-    // Copy the characters from inputArr starting at index 3 into the new string
+
     int i, j = 0;
     for (i = 3; i < length; i++) {
         newStr[j++] = inputArr[i];
     }
     newStr[j] = '\0';
     char* buffer = (char*)malloc(sizeof(char) * (strlen(newStr) + 7));
-    // Copy "Files/" to the beginning of the buffer
+
     strcpy(buffer, "Files/");
-    // Concatenate newStr to the end of the buffer
+
     strcat(buffer, newStr);
-    // Create a new deckNode object and set its properties based on the new string
+
     deckNode* node = readDeckFromFile(buffer);
-    // set node properties here based on newStr
-    // ...
-    // Free the memory allocated for the new string
+
+
     free(newStr);
     return node;
 
