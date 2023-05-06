@@ -18,9 +18,13 @@ void readInput(char *input, int maxLength) {
     input[strcspn(input, "\n")] = '\0'; // Remove newline character
 }
 
-void getInput(char *input){
+void getInput(char *input, char* message){
     printf("LAST Command: \n");
-    printf("Message: \n");
+    if(message == NULL){
+        message = "";
+    }
+
+    printf("Message: %s \n", message);
     printf("INPUT > \n");
     readInput(input, 20);
 }

@@ -5,7 +5,7 @@
 #ifndef YUKONPROJEKT_READER_H
 #define YUKONPROJEKT_READER_H
 
-void getInput(char *input);
+void getInput(char *input, char * message);
 int getFunctionOfInput(char *input);
 
 #endif //YUKONPROJEKT_READER_H

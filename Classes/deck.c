@@ -91,11 +91,7 @@ bool checkForSuitsAndNumber(deckNode* deck) {
         }
     }
 
-
     return true;
-
-
-
 
 }
 
@@ -232,70 +228,16 @@ deckNode* splitter (deckNode* deck, int splitCard){
 }
 
 
-column* instantiate_yukon_board(deckNode* deck, bool showCards, bool visible){
+column* instantiate_yukon_board(deckNode* deck, bool showCards, bool visible) {
 
     column *head = NULL, *prev = NULL;
+    column* columns[11] = {NULL};
 
     for (int col = 1; col <= 11; col++) {
         column* newColumn = (column*)malloc(sizeof(column));
         newColumn->column = col;
         newColumn->next = NULL;
-
-        int cards_in_column;
-
-        if(col < 8 && deck != NULL && !showCards){
-            newColumn->node = create_list_element(&deck);
-
-            if(col > 1){
-                printf("Watch this");
-                newColumn->node->Card->is_visible = false;
-            }
-            else{
-                newColumn->node->Card->is_visible = true;
-            }
-
-            if(col == 1){
-                cards_in_column = 1;
-            }else{
-                cards_in_column = 4 + col;
-            }
-
-            ListElement* current_node = newColumn->node;
-
-            for (int i = 1; i < cards_in_column; i++) {
-                ListElement* newNode = create_list_element(&deck);
-                newNode->Card->is_visible = (i < -1 + col) ? false : true;
-                current_node->next = newNode;
-                current_node = newNode;
-            }
-
-        }else if(showCards && col < 8){
-
-            newColumn->node = create_list_element(&deck);
-
-            if(col < 4){
-                cards_in_column = 8;
-            }
-            else{
-                cards_in_column = 7;
-            }
-
-            ListElement* current_node = newColumn->node;
-            current_node->Card->is_visible = (!visible) ? false : true;
-
-            for (int i = 1; i < cards_in_column; ++i) {
-                ListElement* newNode = create_list_element(&deck);
-                newNode->Card->is_visible = (!visible) ? false : true;
-                current_node->next = newNode;
-                current_node = newNode;
-            }
-
-
-
-
-        } else{
-            newColumn->node = NULL;
-        }
+        newColumn->node = NULL;
 
         if (head == NULL) {
             head = newColumn;
@@ -303,12 +245,59 @@ column* instantiate_yukon_board(deckNode* deck, bool showCards, bool visible){
             prev->next = newColumn;
         }
         prev = newColumn;
+        columns[col - 1] = newColumn;
+    }
 
+    int current_col = 0;
+    int cards_in_column[7] = {1, 6, 7, 8, 9, 10, 11};
 
+    if (showCards) {
+        for (int i = 0; i < 7; i++) {
+            cards_in_column[i] = (i < 3) ? 8 : 7;
+        }
+    }
 
+    int assigned_cards[7] = {0};
 
+    while (deck != NULL && current_col < 7) {
+        if (assigned_cards[current_col] < cards_in_column[current_col]) {
+            ListElement* newNode = create_list_element(&deck);
 
+            if (columns[current_col]->node == NULL) {
+                columns[current_col]->node = newNode;
+                newNode->Card->is_visible = (current_col == 0) ? true : false;
+            } else {
+                ListElement* current_node = columns[current_col]->node;
+                int intervals = 1;
+                while (current_node->next != NULL) {
+                    current_node = current_node->next;
+                    intervals++;
+                }
+                current_node->next = newNode;
+                if(intervals < current_col){
+                    newNode->Card->is_visible = false;
+                }
+                else{
+                    newNode->Card->is_visible = true;
+                }
 
+            }
+
+            assigned_cards[current_col]++;
+            current_col = (current_col + 1) % 7;
+        } else {
+            current_col = (current_col + 1) % 7;
+        }
+    }
+
+    if (showCards) {
+        for (int col = 0; col < 7; col++) {
+            ListElement* current_node = columns[col]->node;
+            while (current_node != NULL) {
+                current_node->Card->is_visible = visible;
+                current_node = current_node->next;
+            }
+        }
     }
 
     return head;
@@ -352,9 +341,6 @@ void printer(column* col) {
                     }
                 }
 
-
-
-
                 if (currentCard != NULL) {
                     allCardsNull = false;
                     if (currentCard->Card->is_visible) {
@@ -395,6 +381,7 @@ void printer(column* col) {
         j++;
 
     }
+
 
 
 }
@@ -449,11 +436,6 @@ deckNode* randomShuffle(deckNode* deck){
 
         deckNode* prev = NULL;
         deckNode* curr = unshuffledPile;
-
-        /*if(i > 1){
-            prev = curr;
-            curr = curr->next;
-        }*/
 
 
 

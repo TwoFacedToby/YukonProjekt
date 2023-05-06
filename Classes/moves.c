@@ -34,7 +34,7 @@ int convertFrokLetter(char letter){
     return letter;
 }
 
-bool legalMove(column* col, int colStart, char type, char number, int colEnd){
+int legalMove(column* col, int colStart, char type, char number, int colEnd){
 
     column* fromCol;
     column* toCol;
@@ -57,7 +57,7 @@ bool legalMove(column* col, int colStart, char type, char number, int colEnd){
 
         while(currNode->Card->num != number || currNode->Card->type != type){
             if(currNode->next == NULL){
-                return false;
+                return 0;
             }
             prev = currNode;
             currNode = currNode->next;
@@ -81,12 +81,14 @@ bool legalMove(column* col, int colStart, char type, char number, int colEnd){
     int checkerNumberFirst = convertFrokLetter(currNode->Card->num);
 
     if(toCol->node == NULL && checkerNumberFirst == 13){
+        int turned = 1;
         if(!prev->Card->is_visible){
             prev->Card->is_visible = true;
+            turned = 2;
         }
         prev->next = NULL;
         toCol->node = currNode;
-        return true;
+        return turned;
     }
 
     ListElement* lastElementInRow = toCol->node;
@@ -97,27 +99,24 @@ bool legalMove(column* col, int colStart, char type, char number, int colEnd){
 
     int checkerNumberLast = convertFrokLetter(lastElementInRow->Card->num);
 
-
-
-
     if(checkerNumberLast == checkerNumberFirst + 1 && lastElementInRow->Card->type != currNode->Card->type){
-
+        int turned = 1;
         lastElementInRow->next = currNode;
         if(!prev->Card->is_visible){
             prev->Card->is_visible = true;
+            turned = 2;
         }
         prev->next = NULL;
 
-        return true;
+        return turned;
     }
     else{
-        return false;
+        return 0;
     }
-
 }
 
 
-bool legalPileMove(column* col, int colStart, int colEnd){
+int legalPileMove(column* col, int colStart, int colEnd){
 
     column* fromCol;
     column* toCol;
@@ -136,7 +135,7 @@ bool legalPileMove(column* col, int colStart, int colEnd){
     }
 
     if(fromCol->node == NULL){
-        return false;
+        return 0;
     }
 
     currNode = fromCol->node;
@@ -157,18 +156,21 @@ bool legalPileMove(column* col, int colStart, int colEnd){
 
     if(toCol->node == NULL && cardFrom == 1){
 
+        int turned = 1;
+
         if(firstCard){
             fromCol->node = NULL;
         }
         else{
             if(!prev->Card->is_visible){
                 prev->Card->is_visible = true;
+                turned = 2;
             }
             prev->next = NULL;
         }
 
         toCol->node = currNode;
-        return true;
+        return turned;
 
     }
 
@@ -183,24 +185,24 @@ bool legalPileMove(column* col, int colStart, int colEnd){
     }
 
 
-
-
-
     if(toCol->node != NULL && cardPile + 1 == cardFrom && currNode->Card->type == pileNode->Card->type){
+        int turned = 1;
+
         if(firstCard){
             fromCol->node = NULL;
         }
         else{
             if(!prev->Card->is_visible){
                 prev->Card->is_visible = true;
+                turned = 2;
             }
             prev->next = NULL;
         }
         pileNode->next = currNode;
-        return true;
+        return turned;
     }
     else{
-        return false;
+        return 0;
     }
 
 
@@ -259,6 +261,10 @@ bool moveFromPileToC(column* col, int colStart, int colEnd){
         toCol->node = currNode;
         return true;
 
+    }
+
+    if(toCol->node == NULL){
+        return false;
     }
 
     columnNode = toCol->node;
