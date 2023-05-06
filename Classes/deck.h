@@ -29,7 +29,6 @@ typedef struct ColumnStart{
     struct ColumnStart* next;
 }column;
 
-//For the printf statement in main
 typedef struct ColumnStartNode {
     column *col_start;
     struct ColumnStartNode *next;

@@ -83,10 +83,31 @@ moves* addPreviousMoves(moves* playerMoves, int colStart, char cardNum, char car
 
 moves* addRedoToUndo(moves* lastMoves, column* col, moves* undoMove){
 
-    addPreviousMoves(lastMoves, undoMove->startCol, undoMove->cardNum, undoMove->cardType, undoMove->endColumn, undoMove->was_visible);
+    if(undoMove->was_visible){
+        column * temp = col;
+        ListElement* element;
+
+
+        for (int i = 0; i < undoMove->startCol; ++i) {
+            temp = temp->next;
+        }
+        element = temp->node;
+
+        while (element->next->Card->type != undoMove->cardType && element->next->Card->num != undoMove->cardNum){
+            element = element->next;
+        }
+
+        element->Card->is_visible = true;
+
+    }
+
+    addPreviousMoves(lastMoves, undoMove->startCol, undoMove->cardNum, undoMove->cardType, undoMove->endColumn, false);
+
+
 
     undoMove = NULL;
     free(undoMove);
+
 
 
 }

@@ -13,7 +13,7 @@
 
 void save_deck_to_file(deckNode* head, char* filename) {
     char file_path[100];
-    sprintf(file_path, "Files/%s", filename); // add the "Files/" directory to the filename
+    sprintf(file_path, "Files/%s", filename);
 
     FILE* fp = fopen(file_path, "w");
     if (fp == NULL) {

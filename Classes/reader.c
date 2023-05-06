@@ -197,5 +197,8 @@ int getFunctionOfInput(char *input){
         }
         return 0;
     }
+    else if(input[0] == 'H'){
+        return 18;
+    }
     else return 0;
 }

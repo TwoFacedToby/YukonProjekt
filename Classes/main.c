@@ -9,6 +9,7 @@
 #include "FileHandler.h"
 #include "previousMoves.h"
 #include "messages.h"
+#include "help.h"
 
 char input[20];
 
@@ -19,6 +20,7 @@ int main() {
     moves* previousMoves = NULL;
     moves* redoMove = NULL;
     bool gameRunning = false;
+    bool deckLoadingPhase = false;
 
 
     char* messages = NULL;
@@ -88,13 +90,15 @@ int main() {
 
                 currentGame = col;
                 col = instantiate_yukon_board(startPhaseDeck, false, false);
-                if(!gameRunning){
+                if(!gameRunning && !deckLoadingPhase){
                     messages = messageHandler(messages, "Error: there is no game running");
                 } else{
                     messages = messageHandler(messages, "OK");
+                    gameRunning = false;
+                    deckLoadingPhase = false;
                 }
 
-                gameRunning = false;
+
                 //Quit current game, still hold on to current deck
 
                 break;
@@ -122,6 +126,11 @@ int main() {
                 break;
             case 5:
                 //SL
+                if(gameRunning){
+                    messages = messageHandler(messages, "Error: You can not split the deck when the game is running");
+                    break;
+                }
+
                 splitNumber = atoi(&input[3]);
                 if(deck != NULL){
                     deck = splitter(deck, splitNumber);
@@ -138,6 +147,11 @@ int main() {
             case 6:
                 //SR
                 //Shuffle deck at random
+                if(gameRunning){
+                    messages = messageHandler(messages, "Error: You can not shuffle the deck when the game is running");
+                    break;
+                }
+
                 if(deck != NULL){
                     deck = randomShuffle(deck);
                     col = instantiate_yukon_board(deck, true, true);
@@ -150,6 +164,11 @@ int main() {
             case 7:
                 //SW
                 //Show screen, show the full current deck on the screen, not as a game.
+                if(gameRunning){
+                    messages = messageHandler(messages, "Error: You can now show cards when a game is running");
+                    break;
+                }
+
                 if(deck != NULL){
                     col = instantiate_yukon_board(deck, true, true);
                     messages = messageHandler(messages, "OK");
@@ -168,12 +187,23 @@ int main() {
             case 9:
                 //LD
                 //Load Deck. Can contain filename.
+                if(gameRunning){
+                    messages = messageHandler(messages, "Error: You need to quit the game before loading a new deck");
+                    break;
+                }
 
                 currentGame = NULL;
+
+                if(strcmp(input, "LD") == 0){
+                    strcpy(input, input);
+                    strcat(input, " deck.txt");
+                }
+
                 deck = loader(input);
                 if(deck != NULL){
                     col = instantiate_yukon_board(deck, true, false);
                     messages = messageHandler(messages, "OK");
+                    deckLoadingPhase = true;
                 }else{
                     messages = messageHandler(messages, "Error: No file found with that name");
                 }
@@ -188,11 +218,18 @@ int main() {
             case 11:
                 //R
                 //Redo (extra assignment)
+                if(!gameRunning){
+                    messages = messageHandler(messages, "Error: You need to start again to do a redo");
+                    break;
+                }
+
                 if(redoMove != NULL){
 
                     addRedoToUndo(previousMoves, col, redoMove);
                     redoMove = undoLastMove(previousMoves, col, redoMove);
                     messages = messageHandler(messages, "OK");
+                    free(redoMove);
+                    redoMove = NULL;
 
 
                 } else{
@@ -204,6 +241,10 @@ int main() {
             case 12:
                 //U
                 //Undo (extra assignment)
+                if(!gameRunning){
+                    messages = messageHandler(messages, "Error: You need to start again to an unoo");
+                    break;
+                }
 
                 redoMove = undoLastMove(previousMoves, col, redoMove);
 
@@ -214,12 +255,15 @@ int main() {
                 }
 
 
-
-
-
                 break;
             case 13:
                 //Move top card from column to another column
+                if(!gameRunning){
+                    messages = messageHandler(messages, "Error: You need to start again to move a card");
+                    break;
+                }
+
+
                 columnFrom = atoi(&input[1]);
                 columnTo = atoi(&input[5]);
 
@@ -241,6 +285,10 @@ int main() {
                 break;
             case 14:
                 //Move top card from column to a finished pile
+                if(!gameRunning){
+                    messages = messageHandler(messages, "Error: You need to start again to move a card");
+                    break;
+                }
 
                 columnFrom = atoi(&input[1]);
                 pileTo = atoi(&input[5]);
@@ -261,7 +309,10 @@ int main() {
                 break;
             case 15:
                 //Move a specific card from a column to another column
-
+                if(!gameRunning){
+                    messages = messageHandler(messages, "Error: You need to start again to move a card");
+                    break;
+                }
 
                 columnFrom = atoi(&input[1]);
                 columnTo = atoi(&input[8]);
@@ -296,6 +347,11 @@ int main() {
                 break;
             case 17:
                 //Move from top of a finished pile to another column
+                if(!gameRunning){
+                    messages = messageHandler(messages, "Error: You need to start again to move a card");
+                    break;
+                }
+
                 pileFrom = atoi(&input[1]);
                 columnTo = atoi(&input[5]);
                 bool my = moveFromPileToC(col, pileFrom, columnTo);
@@ -306,6 +362,11 @@ int main() {
                 }else{
                     messages = messageHandler(messages, "Error: Not a legal move");
                 }
+                break;
+            case 18:
+                //Help for the player
+                printHelp();
+
                 break;
 
         }
