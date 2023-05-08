@@ -7,9 +7,8 @@
 #define YUKONPROJEKT_DECK_H
 
 typedef struct CARD{
-    char num; //ACE == A, 2-9 = 2-9, 10 == T, Jack == J, Queen == Q, King == K
-    char type; //Clubs == C, Diamonds == D, Hearts == H, Spades == S
-    int column; //Columns 1-7 == 1-7, Finished Piles 1-4 == 8-11
+    char num;
+    char type;
     bool is_visible;
 }card;
 

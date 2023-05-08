@@ -51,6 +51,7 @@ int legalMove(column* col, int colStart, char type, char number, int colEnd){
 
     }
 
+
     currNode = fromCol->node;
 
     if(number != 'F' && type != 'F'){

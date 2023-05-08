@@ -169,8 +169,6 @@ deckNode* splitter (deckNode* deck, int splitCard){
 
         random_num = rand() % 51 + 1;
 
-        printf("myRanom number: %d", random_num);
-
         splitCard = random_num;
 
     }
@@ -184,18 +182,11 @@ deckNode* splitter (deckNode* deck, int splitCard){
         if(secondHalf){
             secondHalf = secondHalf->next;
         }
-
-
-
     }
-    printf("hej");
+
     if(prev){
         prev->next = NULL;
     }
-
-
-
-
 
 
     current = firstHalf;
@@ -257,7 +248,6 @@ column* instantiate_yukon_board(deckNode* deck, bool showCards, bool visible) {
     }
 
     int assigned_cards[7] = {0};
-
     while (deck != NULL && current_col < 7) {
         if (assigned_cards[current_col] < cards_in_column[current_col]) {
             ListElement* newNode = create_list_element(&deck);
@@ -279,9 +269,7 @@ column* instantiate_yukon_board(deckNode* deck, bool showCards, bool visible) {
                 else{
                     newNode->Card->is_visible = true;
                 }
-
             }
-
             assigned_cards[current_col]++;
             current_col = (current_col + 1) % 7;
         } else {
@@ -304,7 +292,7 @@ column* instantiate_yukon_board(deckNode* deck, bool showCards, bool visible) {
 
 void printer(column* col) {
 
-    column *currentCol = col;
+    column *currentCol;
     column *firstCol = col;
 
 
@@ -426,24 +414,15 @@ deckNode* randomShuffle(deckNode* deck){
     deckNode* unshuffledPile = deck;
     deckNode* shuffledPile = NULL;
 
-    srand(time(NULL)); // Seed the random number generator with current time, move this outside the loop
+    srand(time(NULL));
 
     for (int i = 1; i <= 52; i++) {
-        int random_num = rand() % i + 1; // Generates a random number based on the remaining elements
+        int random_num = rand() % i + 1;
 
-        deckNode* prev = NULL;
         deckNode* curr = unshuffledPile;
 
+        unshuffledPile = unshuffledPile->next;
 
-
-        // Detach the current node from the unshuffledPile
-        if (shuffledPile != NULL) {
-            unshuffledPile = unshuffledPile->next;
-        } else {
-            unshuffledPile = unshuffledPile->next;
-        }
-
-        // Insert the detached node into shuffledPile
         if (shuffledPile == NULL) {
             shuffledPile = curr;
             curr->next = NULL;
@@ -473,8 +452,6 @@ deckNode* randomShuffle(deckNode* deck){
                 curr->next = temp;
             }
         }
-
-
     return shuffledPile;
 }
 
